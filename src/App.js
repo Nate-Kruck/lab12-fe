@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  
+} from 'react-router-dom'
+import AuthPage from './AuthPage/AuthPage.js'
+import ToDoList from './ToDoList/ToDoList.js'
+import HomePage from './HomePage/HomePage.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends Component {
+    state = {
+        token: localStorage.getItem('token'),
+    }
+
+    handleToken = (token) => {
+        this.setState({ token: token })
+        localStorage.setItem('token', token)
+    }
+
+    clearToken = () => {
+        this.setState({ token: '' })
+        localStorage.setItem('token', '')
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Router>
+                  <Switch>
+                    <Route
+                      path='/'
+                      exact
+                      render={(routerProps) => <HomePage {...routerProps} />}
+                    />
+                    <Route
+                      path='/auth'
+                      exact
+                      render={(routerProps) => <AuthPage {...routerProps} />}
+                    />
+                    <Route
+                      path='/todo'
+                      exact
+                      render={(routerProps) => <ToDoList {...routerProps} />}
+                    />
+                  </Switch>
+                </Router>
+            </div>
+        )
+    }
 }
-
-export default App;
+                        
